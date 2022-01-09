@@ -75,7 +75,7 @@ app.get("/movies/update/:ID", (req, res) => {
         movies[req.params.ID].rating = req.query.rating;
       }
       if (
-        req.query.year &&
+        req.query.rating &&
         req.query.year &&
         req.query.year >= 1000 &&
         !isNaN(req.query.year)
