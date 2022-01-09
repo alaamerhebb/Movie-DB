@@ -37,7 +37,30 @@ app.get("/hello/:userID", (req, res) => {
       });
     }
   });
-  app.get("/movies/create", (req, res) => {});
+  app.get("/movies/add", (req, res) => {
+    if (
+      req.query.title &&
+      req.query.year &&
+      req.query.year >= 1000 &&
+      !isNaN(req.query.year) &&
+      !isNaN(req.query.rating)
+    ) {
+      if (req.query.rating == "") {
+        req.query.rating = 4;
+        movies.push(req.query);
+        res.send(movies);
+      } else {
+        movies.push(req.query);
+        res.send(movies);
+      }
+    } else {
+      res.status(403).send({
+        status: 403,
+        error: true,
+        message: "you cannot create a movie without providing a title and a year",
+      });
+    }
+  });
 
 app.get("/movies/read", (req, res) => {
   res.status(200).send({ status: 200, data: movies });
@@ -56,6 +79,7 @@ app.get("/movies/read/:content", (req, res) => {
       res.status(200).send({
         status: 200,
         data: movies.sort((a, b) =>
+        
           a.title > b.title ? 1 : b.title > a.title ? -1 : 0
         ),
       });
